@@ -12,6 +12,7 @@ FreqMeasureMulti freq3;
 
 void setup() {
   Serial.begin(57600);
+  while (!Serial) ; // wait for Arduino Serial Monitor
   freq1.begin(6);
   freq2.begin(9);
   freq3.begin(10);
