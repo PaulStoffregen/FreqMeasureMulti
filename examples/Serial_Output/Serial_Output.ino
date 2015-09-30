@@ -13,6 +13,9 @@ FreqMeasureMulti freq3;
 void setup() {
   Serial.begin(57600);
   while (!Serial) ; // wait for Arduino Serial Monitor
+  delay(10);
+  Serial.println("FreqMeasureMulti Begin");
+  delay(10);
   freq1.begin(6);
   freq2.begin(9);
   freq3.begin(10);
@@ -52,7 +55,7 @@ void loop() {
     if (count3 > 0) {
       Serial.print(freq3.countToFrequency(sum3 / count3));
     } else {
-      Serial.print("(no info)");
+      Serial.print("(no pulses)");
     }
     Serial.println();
     sum1 = 0;

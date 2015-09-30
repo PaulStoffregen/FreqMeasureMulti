@@ -48,6 +48,7 @@ bool FreqMeasureMulti::begin(uint32_t pin)
 			channel = 8;
 			return false;
 	}
+	NVIC_DISABLE_IRQ(IRQ_FTM0);
 	if (FTM0_MOD != 0xFFFF || (FTM0_SC & 0x7F) != FTM_SC_VALUE) {
 		FTM0_SC = 0;
 		FTM0_CNT = 0;
@@ -140,7 +141,6 @@ void ftm0_isr(void)
 		capture_msw++;
 		inc = true;
 	}
-	// TODO: this could be efficient by reading FTM0_STATUS
 	uint8_t mask = FTM0_STATUS & channelmask;
 	if ((mask & 0x01)) list[0]->isr(inc);
 	if ((mask & 0x02)) list[1]->isr(inc);
