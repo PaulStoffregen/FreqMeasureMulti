@@ -12,7 +12,7 @@ Up to 8 frequencies can be measured simultaneously.
 
 FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must specify a pin number.  Because more than 1 input can be measured, you must create FreqMeasureMulti instances.  See the Serial_Output example.
 
-Extended in v0.21 :
+Extended in v0.22 :
 
 As in the v0.1, an instance can be started with begin(pin). More capture modes are available through begin(pin, mode) by using the following constants for mode as follows :
 * FREQMEASUREMULTI_RAISING -> A new value becomes available at each rising ramp and contains the time since the previous rising ramp (default value when mode is not given in begin(pin))
@@ -22,7 +22,7 @@ As in the v0.1, an instance can be started with begin(pin). More capture modes a
 * FREQMEASUREMULTI\_MARK\_ONLY -> A new value becomes available at each falling ramp and contains the time since the previous rising ramp. Thus, only the "high time" of the signal period is returned
 * FREQMEASUREMULTI_ALTERNATE -> A new value becomes available at each rising and each falling ramp and contains the time since the previous ramp. Thus, the high and the low time of the signal period are returned alternating.
 
-Since depending on the selected capture mode it is not always clear which part of the signal has just been measured, extended information can additionally be read with the function readLevel() directly after invoking read() to make sure that the ring buffer does still hold coherent information.
+Since depending on the selected capture mode it is not always clear which part of the signal has just been measured, extended information can additionally be obtained with the function readLevel() after invoking read().
 Possible return values are:
 * LEVEL\_SPACE\_ONLY (binary 0b00) -> the read() value contains only the duration of the "low time"
 * LEVEL\_SPACE\_MARK (binary 0b01) -> the read() value contains the duration of a full signal period, starting with "low" and followed by "high"

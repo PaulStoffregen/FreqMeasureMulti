@@ -41,6 +41,7 @@ private:
 	uint8_t buffer_head;
 	uint8_t buffer_tail;
 	uint8_t channel;
+	uint8_t last_read_level;
 	uint32_t raiscap_previous;
 	uint32_t fallcap_previous;
 	bool act_on_fall, act_on_raise, read_diff;
