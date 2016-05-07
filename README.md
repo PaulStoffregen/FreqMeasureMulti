@@ -12,7 +12,7 @@ Up to 8 frequencies can be measured simultaneously.
 
 FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must specify a pin number.  Because more than 1 input can be measured, you must create FreqMeasureMulti instances.  See the Serial_Output example.
 
-Extended in v0.2 :
+Extended in v0.21 :
 
 As in the v0.1, an instance can be started with begin(pin). More capture modes are available through begin(pin, mode) by using the following constants for mode as follows :
 * FREQMEASUREMULTI_RAISING -> A new value becomes available at each rising ramp and contains the time since the previous rising ramp (default value when mode is not given in begin(pin))
@@ -22,13 +22,12 @@ As in the v0.1, an instance can be started with begin(pin). More capture modes a
 * FREQMEASUREMULTI\_MARK\_ONLY -> A new value becomes available at each falling ramp and contains the time since the previous rising ramp. Thus, only the "high time" of the signal period is returned
 * FREQMEASUREMULTI_ALTERNATE -> A new value becomes available at each rising and each falling ramp and contains the time since the previous ramp. Thus, the high and the low time of the signal period are returned alternating.
 
-Since depending on the selected capture mode it is not always clear which part of the signal has been measured, extended information can alternatively be read with the function readEx() instead of read(). readEx() returns a predefined structure fmultiRecord which has two members: 
-* .count contains the same value as would be read with the read() function
-* .level contains a constant which describes the captured signal structure as follows:
-  * LEVEL\_SPACE\_ONLY (binary 0b00) -> the .count value contains only the duration of the "low time"
-  * LEVEL\_SPACE\_MARK (binary 0b01) -> the .count value contains the duration of a full signal period, starting with "low" and followed by "high"
-  * LEVEL\_MARK\_SPACE (binary 0b10) -> the .count value contains the duration of a full signal period, starting with "high" and followed by "low" (default when mode is not given in begin(pin))
-  * LEVEL\_MARK\_ONLY (binary 0b11) -> the .count value contains only the duration of the "high time"
+Since depending on the selected capture mode it is not always clear which part of the signal has just been measured, extended information can additionally be read with the function readLevel() directly after invoking read() to make sure that the ring buffer does still hold coherent information.
+Possible return values are:
+* LEVEL\_SPACE\_ONLY (binary 0b00) -> the read() value contains only the duration of the "low time"
+* LEVEL\_SPACE\_MARK (binary 0b01) -> the read() value contains the duration of a full signal period, starting with "low" and followed by "high"
+* LEVEL\_MARK\_SPACE (binary 0b10) -> the read() value contains the duration of a full signal period, starting with "high" and followed by "low" (default when mode is not given in begin(pin))
+* LEVEL\_MARK\_ONLY (binary 0b11) -> the read() value contains only the duration of the "high time"
 
 Finally, since not everything is about frequency but sometimes about time, a class member function countToNanoseconds(uint32\_t count) has been added, similar to countToFrequency(uint32\_t count), but it does return the corresponding time in nanoseconds.
 

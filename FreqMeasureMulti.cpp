@@ -3,7 +3,7 @@
  * Copyright (c) 2015 PJRC.COM, LLC - Paul Stoffregen <paul@pjrc.com>
  * Extended 2016 by Thierry Frenkel <theremingenieur@gmail.com>
  *
- * Version 0.2
+ * Version 0.21
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -126,7 +126,11 @@ uint32_t FreqMeasureMulti::read(void)
 	return value;
 }
 
-fmultiRecord FreqMeasureMulti::readEx(void)
+uint8_t FreqMeasureMulti::readLevel(void)
+{
+	return buffer_value[buffer_tail].level;
+}
+/* fmultiRecord FreqMeasureMulti::readEx(void)
 {
 	uint32_t head = buffer_head;
 	uint32_t tail = buffer_tail;
@@ -136,7 +140,7 @@ fmultiRecord FreqMeasureMulti::readEx(void)
 	fmultiRecord value = buffer_value[tail];
 	buffer_tail = tail;
 	return value;
-}
+} */
 
 float FreqMeasureMulti::countToFrequency(uint32_t count)
 {

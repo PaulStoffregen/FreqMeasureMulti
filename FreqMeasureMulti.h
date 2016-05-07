@@ -30,7 +30,7 @@ public:
 	bool begin(uint32_t pin, uint8_t mode);
 	uint32_t available(void);
 	uint32_t read(void);
-	fmultiRecord readEx(void);
+	uint8_t readLevel(void);
 	static float countToFrequency(uint32_t count);
 	static float countToNanoseconds(uint32_t count);
 	void end(void);
