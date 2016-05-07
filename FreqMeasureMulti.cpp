@@ -130,17 +130,6 @@ uint8_t FreqMeasureMulti::readLevel(void)
 {
 	return buffer_value[buffer_tail].level;
 }
-/* fmultiRecord FreqMeasureMulti::readEx(void)
-{
-	uint32_t head = buffer_head;
-	uint32_t tail = buffer_tail;
-	if (head == tail) return {0xFF,0xFFFFFFFF};
-	tail = tail + 1;
-	if (tail >= FREQMEASUREMULTI_BUFFER_LEN) tail = 0;
-	fmultiRecord value = buffer_value[tail];
-	buffer_tail = tail;
-	return value;
-} */
 
 float FreqMeasureMulti::countToFrequency(uint32_t count)
 {
