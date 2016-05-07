@@ -30,7 +30,7 @@ Since depending on the selected capture mode it is not always clear which part o
   * LEVEL\_MARK\_SPACE (binary 0b10) -> the .count value contains the duration of a full signal period, starting with "high" and followed by "low" (default when mode is not given in begin(pin))
   * LEVEL\_MARK\_ONLY (binary 0b11) -> the .count value contains only the duration of the "high time"
 
-Finally, since not everything is about frequency but sometimes about time, a class member function countToNanoseconds(uint32\_t count) has been added, similar to countToFrequency(uint32\_t count), but it does not return the corresponding time in nanoseconds.
+Finally, since not everything is about frequency but sometimes about time, a class member function countToNanoseconds(uint32\_t count) has been added, similar to countToFrequency(uint32\_t count), but it does return the corresponding time in nanoseconds.
 
 http://www.pjrc.com/teensy/td_libs_FreqMeasure.html
 
