@@ -44,7 +44,6 @@ bool FreqMeasureMulti::begin(uint32_t pin) {
 bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 {
 	uint8_t capture_mode;
-	Serial.print("PIN: ");Serial.print(pin);Serial.print(" - Mode: "); Serial.println(mode);
 	switch (pin) {
 		case 22: channel = 0; ftm=0; CORE_PIN22_CONFIG = PORT_PCR_MUX(4); break;
 		case 23: channel = 1; ftm=0; CORE_PIN23_CONFIG = PORT_PCR_MUX(4); break;
@@ -150,7 +149,6 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 		NVIC_ENABLE_IRQ(IRQ_FTM2); break;
 /* To do: add MK6x FTM3 support */
 	}
-	Serial.print("FTM: ");Serial.print(ftm);Serial.print(" - Channel: "); Serial.println(channel);
 	return true;
 }
 
