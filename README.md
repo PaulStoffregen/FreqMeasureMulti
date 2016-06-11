@@ -1,14 +1,14 @@
 #FreqMeasureMulti Library#
 
-FreqMeasureMulti basically measures the elapsed time during each cycle of an input frequency, that means the number of timer ticks between a raising ramp of the input signal and the next. Extended capture modes which allow a more detailed analysis of the input signal have been added in v0.2 (see below).
+FreqMeasureMulti basically measures the elapsed time during each cycle of an input frequency, that means the number of timer ticks between a raising ramp of the input signal and the next. Extended capture modes which allow a more detailed analysis of the input signal have been added in v0.2 (see below). v0.3 adds support for more pins, allowing either to capture up to 12 pulse streams simultaneously, or to use for example the FTM1 (3,4) and/or FTM2 (25,32) pins while keeping the often used FTM0 pins (5,6,9,10,20,21,22,23) free for GPIO or PWM use.
 
-Up to 8 frequencies can be measured simultaneously.
+Up to 12 frequencies can be measured simultaneously.
 
     Board            Supported Pins
     -----            --------------
-    Teensy LC        6, 9, 10, 20, 22, 23
-    Teensy 3.1       5, 6, 9, 10, 20, 21, 22, 23
-    Teensy 3.2       5, 6, 9, 10, 20, 21, 22, 23
+    Teensy LC        3, 4, 6, 9, 10, 20, 22, 23
+    Teensy 3.1       3, 4, 5, 6, 9, 10, 20, 21, 22, 23, 25, 32
+    Teensy 3.2       3, 4, 5, 6, 9, 10, 20, 21, 22, 23, 25, 32
 
 FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must specify a pin number.  Because more than 1 input can be measured, you must create FreqMeasureMulti instances.  See the Serial_Output example.
 
