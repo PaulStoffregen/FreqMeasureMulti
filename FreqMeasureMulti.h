@@ -36,11 +36,15 @@ public:
 	void end(void);
 private:
 	void isr(bool inc);
+	volatile uint32_t *csc = 0;
 	friend void ftm0_isr(void);
+	friend void ftm1_isr(void);
+	friend void ftm2_isr(void);
 	fmultiRecord buffer_value[FREQMEASUREMULTI_BUFFER_LEN];
 	uint8_t buffer_head;
 	uint8_t buffer_tail;
 	uint8_t channel;
+	uint8_t ftm;
 	uint8_t last_read_level;
 	uint32_t raiscap_previous;
 	uint32_t fallcap_previous;
