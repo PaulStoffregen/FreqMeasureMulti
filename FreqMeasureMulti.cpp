@@ -29,7 +29,7 @@
 #define FTM_SC_VALUE (FTM_SC_TOIE | FTM_SC_CLKS(1) | FTM_SC_PS(0))
 #define FTM_CSC_RAISING (FTM_CSC_CHIE | FTM_CSC_ELSA)
 #define FTM_CSC_FALLING (FTM_CSC_CHIE | FTM_CSC_ELSB)
-#define UPDATE_ON_RAISING 1
+#define UPDATE_ON_RISING 1
 #define UPDATE_ON_FALLING 2
 #define UPDATE_DIFFERENCE 4
 
@@ -38,7 +38,7 @@ static uint16_t capture_msw[4] = {0, 0, 0, 0};
 static FreqMeasureMulti * list[4][8];
 
 bool FreqMeasureMulti::begin(uint32_t pin) {
-	return begin(pin, FREQMEASUREMULTI_RAISING);
+	return begin(pin, FREQMEASUREMULTI_RISING);
 }
 
 bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
@@ -72,9 +72,9 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 			capture_mode = mode;
 			break;
 		default:
-			capture_mode = FREQMEASUREMULTI_RAISING;
+			capture_mode = FREQMEASUREMULTI_RISING;
 	}
-	act_on_raise = (capture_mode & UPDATE_ON_RAISING);
+	act_on_rise = (capture_mode & UPDATE_ON_RISING);
 	act_on_fall = (capture_mode & UPDATE_ON_FALLING);
 	read_diff = (capture_mode & UPDATE_DIFFERENCE);
 
@@ -130,7 +130,7 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 		break;
 	}
 	capture_msw[ftm] = 0;
-	raiscap_previous = 0;
+	risecap_previous = 0;
 	fallcap_previous = 0;
 	next_is_falling = false;
 	buffer_head = 0;
@@ -310,11 +310,11 @@ void FreqMeasureMulti::isr(bool inc)
 	}
 	// compute the waveform period
 	if (next_is_falling) {
-		if (act_on_raise) period = capture - (read_diff ? fallcap_previous : raiscap_previous);
-		raiscap_previous = capture;
+		if (act_on_rise) period = capture - (read_diff ? fallcap_previous : risecap_previous);
+		risecap_previous = capture;
 		level = (read_diff ? LEVEL_SPACE_ONLY : LEVEL_MARK_SPACE);
 	} else if (!next_is_falling ) {
-		if (act_on_fall) period = capture - (read_diff ? raiscap_previous : fallcap_previous);
+		if (act_on_fall) period = capture - (read_diff ? risecap_previous : fallcap_previous);
 		fallcap_previous = capture;
 		level = (read_diff ? LEVEL_MARK_ONLY : LEVEL_SPACE_MARK);
 	}

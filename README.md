@@ -15,7 +15,7 @@ FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must spe
 Extended in v0.22 :
 
 As in the v0.1, an instance can be started with begin(pin). More capture modes are available through begin(pin, mode) by using the following constants for mode as follows :
-* FREQMEASUREMULTI_RAISING -> A new value becomes available at each rising ramp and contains the time since the previous rising ramp (default value when mode is not given in begin(pin))
+* FREQMEASUREMULTI_RISING -> A new value becomes available at each rising ramp and contains the time since the previous rising ramp (default value when mode is not given in begin(pin))
 * FREQMEASUREMULTI_FALLING ->  A new value becomes available at each falling ramp and contains the time since the previous falling ramp.
 * FREQMEASUREMULTI_INTERLEAVE -> A new value becomes available at each rising and each falling ramp and contains the time since the previous similar (rising or falling) ramp. That virtually doubles the actualization rate and allows quicker tracking of variations in the signal frequency.
 * FREQMEASUREMULTI\_SPACE\_ONLY -> A new value becomes available at each rising ramp and contains the time since the previous falling ramp. Thus, only the "low time" of the signal period is returned

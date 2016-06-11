@@ -5,7 +5,7 @@
 
 #define FREQMEASUREMULTI_BUFFER_LEN 24
 // capture modes
-#define FREQMEASUREMULTI_RAISING 1
+#define FREQMEASUREMULTI_RISING 1
 #define FREQMEASUREMULTI_FALLING 2
 #define FREQMEASUREMULTI_INTERLEAVE 3
 #define FREQMEASUREMULTI_SPACE_ONLY 5
@@ -46,9 +46,9 @@ private:
 	uint8_t channel;
 	uint8_t ftm;
 	uint8_t last_read_level;
-	uint32_t raiscap_previous;
+	uint32_t risecap_previous;
 	uint32_t fallcap_previous;
-	bool act_on_fall, act_on_raise, read_diff;
+	bool act_on_fall, act_on_rise, read_diff;
 	bool next_is_falling;
 };
 	
