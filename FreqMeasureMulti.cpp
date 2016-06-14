@@ -96,6 +96,7 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 		*csc = 0;
 		delayMicroseconds(1);
 		#endif
+		attachInterruptVector(IRQ_FTM0, myFtm0isr);
 		NVIC_SET_PRIORITY(IRQ_FTM0, 48);
 		break;
 	case 1:
@@ -114,6 +115,7 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 		*csc = 0;
 		delayMicroseconds(1);
 		#endif
+		attachInterruptVector(IRQ_FTM1, myFtm1isr);
 		NVIC_SET_PRIORITY(IRQ_FTM1, 48);
 		break;
 	case 2:
@@ -126,6 +128,7 @@ bool FreqMeasureMulti::begin(uint32_t pin, uint8_t mode)
 			FTM2_MODE = FTM_MODE_WPDIS; //allow reconfiguring the CSC on the fly
 		}
 		csc = &FTM2_C0SC + channel * 2;
+		attachInterruptVector(IRQ_FTM2, myFtm2isr);
 		NVIC_SET_PRIORITY(IRQ_FTM2, 48);
 		break;
 	}
@@ -233,64 +236,17 @@ void FreqMeasureMulti::end(void)
 #endif
 		}
 	channelmask[ftm] &= ~(1 << channel);
+	if(channelmask[ftm] == 0) { //check if all channels are free, then restore interrupt vectors
+		switch(ftm) {
+		case 0: attachInterruptVector(IRQ_FTM0, ftm0_isr); break;
+		case 1: attachInterruptVector(IRQ_FTM1, ftm1_isr); break;
+		case 2: attachInterruptVector(IRQ_FTM2, ftm2_isr); break;
+		}
+
+	}
 	*csc = 0;
 }
 
-void ftm0_isr(void)
-{
-	bool inc = false;
-	if (FTM0_SC & FTM_SC_TOF) {
-		#if defined(KINETISK)
-		FTM0_SC = FTM_SC_VALUE;
-		#elif defined(KINETISL)
-		FTM0_SC = FTM_SC_VALUE | FTM_SC_TOF;
-		#endif
-		capture_msw[0]++;
-		inc = true;
-	}
-	uint8_t mask = FTM0_STATUS & channelmask[0];
-	if ((mask & 0x01)) list[0][0]->isr(inc);
-	if ((mask & 0x02)) list[0][1]->isr(inc);
-	if ((mask & 0x04)) list[0][2]->isr(inc);
-	if ((mask & 0x08)) list[0][3]->isr(inc);
-	if ((mask & 0x10)) list[0][4]->isr(inc);
-	if ((mask & 0x20)) list[0][5]->isr(inc);
-	#if defined(KINETISK)
-	if ((mask & 0x40)) list[0][6]->isr(inc);
-	if ((mask & 0x80)) list[0][7]->isr(inc);
-	#endif
-}
-
-void ftm1_isr(void)
-{
-	bool inc = false;
-	if (FTM1_SC & FTM_SC_TOF) {
-		#if defined(KINETISK)
-		FTM1_SC = FTM_SC_VALUE;
-		#elif defined(KINETISL)
-		FTM1_SC = FTM_SC_VALUE | FTM_SC_TOF;
-		#endif
-		capture_msw[1]++;
-		inc = true;
-	}
-	uint8_t mask = FTM1_STATUS & channelmask[1];
-//	Serial.println(FTM1_STATUS);//
-	if ((mask & 0x01)) list[1][0]->isr(inc);
-	if ((mask & 0x02)) list[1][1]->isr(inc);
-}
-
-void ftm2_isr(void)
-{
-	bool inc = false;
-	if (FTM2_SC & FTM_SC_TOF) {
-		FTM2_SC = FTM_SC_VALUE;
-		capture_msw[2]++;
-		inc = true;
-	}
-	uint8_t mask = FTM2_STATUS & channelmask[2];
-	if ((mask & 0x01)) list[2][0]->isr(inc);
-	if ((mask & 0x02)) list[2][1]->isr(inc);
-}
 
 void FreqMeasureMulti::isr(bool inc)
 {
@@ -328,3 +284,67 @@ void FreqMeasureMulti::isr(bool inc)
 		}
 	}
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void myFtm0isr(void)
+{
+	bool inc = false;
+	if (FTM0_SC & FTM_SC_TOF) {
+		#if defined(KINETISK)
+		FTM0_SC = FTM_SC_VALUE;
+		#elif defined(KINETISL)
+		FTM0_SC = FTM_SC_VALUE | FTM_SC_TOF;
+		#endif
+		capture_msw[0]++;
+		inc = true;
+	}
+	uint8_t mask = FTM0_STATUS & channelmask[0];
+	if ((mask & 0x01)) list[0][0]->isr(inc);
+	if ((mask & 0x02)) list[0][1]->isr(inc);
+	if ((mask & 0x04)) list[0][2]->isr(inc);
+	if ((mask & 0x08)) list[0][3]->isr(inc);
+	if ((mask & 0x10)) list[0][4]->isr(inc);
+	if ((mask & 0x20)) list[0][5]->isr(inc);
+	#if defined(KINETISK)
+	if ((mask & 0x40)) list[0][6]->isr(inc);
+	if ((mask & 0x80)) list[0][7]->isr(inc);
+	#endif
+}
+
+void myFtm1isr(void)
+{
+	bool inc = false;
+	if (FTM1_SC & FTM_SC_TOF) {
+		#if defined(KINETISK)
+		FTM1_SC = FTM_SC_VALUE;
+		#elif defined(KINETISL)
+		FTM1_SC = FTM_SC_VALUE | FTM_SC_TOF;
+		#endif
+		capture_msw[1]++;
+		inc = true;
+	}
+	uint8_t mask = FTM1_STATUS & channelmask[1];
+//	Serial.println(FTM1_STATUS);//
+	if ((mask & 0x01)) list[1][0]->isr(inc);
+	if ((mask & 0x02)) list[1][1]->isr(inc);
+}
+
+void myFtm2isr(void)
+{
+	bool inc = false;
+	if (FTM2_SC & FTM_SC_TOF) {
+		FTM2_SC = FTM_SC_VALUE;
+		capture_msw[2]++;
+		inc = true;
+	}
+	uint8_t mask = FTM2_STATUS & channelmask[2];
+	if ((mask & 0x01)) list[2][0]->isr(inc);
+	if ((mask & 0x02)) list[2][1]->isr(inc);
+}
+
+#ifdef __cplusplus
+}
+#endif
