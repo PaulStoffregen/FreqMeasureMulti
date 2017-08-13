@@ -5,7 +5,7 @@
 
 #define FREQMEASUREMULTI_BUFFER_LEN 24
 // capture modes
-#define FREQMEASUREMULTI_RAISING 1
+#define FREQMEASUREMULTI_RISING 1
 #define FREQMEASUREMULTI_FALLING 2
 #define FREQMEASUREMULTI_INTERLEAVE 3
 #define FREQMEASUREMULTI_SPACE_ONLY 5
@@ -23,6 +23,16 @@ typedef struct {
 	uint32_t count;
 } fmultiRecord;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern void myFtm0isr(void);
+extern void myFtm1isr(void);
+extern void myFtm2isr(void);
+#ifdef __cplusplus
+}
+#endif
+
 class FreqMeasureMulti
 {
 public:
@@ -36,15 +46,19 @@ public:
 	void end(void);
 private:
 	void isr(bool inc);
-	friend void ftm0_isr(void);
+	volatile uint32_t *csc = 0;
 	fmultiRecord buffer_value[FREQMEASUREMULTI_BUFFER_LEN];
 	uint8_t buffer_head;
 	uint8_t buffer_tail;
 	uint8_t channel;
+	uint8_t ftm;
 	uint8_t last_read_level;
-	uint32_t raiscap_previous;
+	uint32_t risecap_previous;
 	uint32_t fallcap_previous;
-	bool act_on_fall, act_on_raise, read_diff;
+	friend void myFtm0isr(void);
+	friend void myFtm1isr(void);
+	friend void myFtm2isr(void);
+	bool act_on_fall, act_on_rise, read_diff;
 	bool next_is_falling;
 };
 	

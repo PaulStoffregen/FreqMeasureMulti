@@ -2,6 +2,7 @@ FreqMeasureMulti	KEYWORD1
 begin	KEYWORD2
 available	KEYWORD2
 read	KEYWORD2
+readLevel	KEYWORD2
 countToFrequency	KEYWORD2
 countToNanoseconds	KEYWORD2
 end	KEYWORD2
