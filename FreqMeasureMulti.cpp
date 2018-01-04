@@ -209,6 +209,9 @@ void FreqMeasureMulti::isr(bool inc)
 	#if defined(KINETISK)
 	csc[0] = (next_is_falling ? FTM_CSC_FALLING : FTM_CSC_RAISING);
 	#elif defined(KINETISL)
+	csc[0] = 0; // disable
+	asm volatile ("nop");
+	asm volatile ("nop");
 	csc[0] = (next_is_falling ? FTM_CSC_FALLING : FTM_CSC_RAISING) | FTM_CSC_CHF;
 	#endif
 	if (capture <= 0xE000 || !inc) {
