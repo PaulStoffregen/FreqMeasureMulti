@@ -1,4 +1,4 @@
-#FreqMeasureMulti Library#
+# FreqMeasureMulti Library
 
 FreqMeasureMulti basically measures the elapsed time during each cycle of an input frequency, that means the number of timer ticks between a raising ramp of the input signal and the next. Extended capture modes which allow a more detailed analysis of the input signal have been added in v0.2 (see below).
 
@@ -9,6 +9,8 @@ Up to 8 frequencies can be measured simultaneously.
     Teensy LC        6, 9, 10, 20, 22, 23
     Teensy 3.1       5, 6, 9, 10, 20, 21, 22, 23
     Teensy 3.2       5, 6, 9, 10, 20, 21, 22, 23
+    Teensy 3.5       5, 6, 9, 10, 20, 21, 22, 23
+    Teensy 3.6       5, 6, 9, 10, 20, 21, 22, 23
 
 FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must specify a pin number.  Because more than 1 input can be measured, you must create FreqMeasureMulti instances.  See the Serial_Output example.
 
