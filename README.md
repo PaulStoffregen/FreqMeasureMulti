@@ -12,6 +12,12 @@ Up to 8 frequencies can be measured simultaneously.
     Teensy 3.5       5, 6, 9, 10, 20, 21, 22, 23
     Teensy 3.6       5, 6, 9, 10, 20, 21, 22, 23
 
+Teensy 4.x - can support all FlexPWM pin - some of these pins are on the same FlexIO object/subObject as such if you use any of these pins, they can impact how other pins that are that same subobject will work if you attempt to use them for some other sub-system that uses the same timer object.
+
+    Teensy 4		0-9,22-25,28,29,33,34-39
+    Teensy 4.1	    0-9,22-25,28,29,33,36,37,42-47, 48-50(dups),51, 52-53 (dups), 54
+Note: So for T4.x has tested the v.2 stuff yet. 
+
 FreqMeasureMulti uses the same functions as FreqMeasure, except begin() must specify a pin number.  Because more than 1 input can be measured, you must create FreqMeasureMulti instances.  See the Serial_Output example.
 
 Extended in v0.22 :

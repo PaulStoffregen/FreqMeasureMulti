@@ -25,6 +25,7 @@
  */
 
 #include "FreqMeasureMulti.h"
+#if ! defined(__IMXRT1062__)
 
 #define FTM_SC_VALUE (FTM_SC_TOIE | FTM_SC_CLKS(1) | FTM_SC_PS(0))
 #define FTM_CSC_RAISING (FTM_CSC_CHIE | FTM_CSC_ELSA)
@@ -239,3 +240,5 @@ void FreqMeasureMulti::isr(bool inc)
 		}
 	}
 }
+
+#endif
