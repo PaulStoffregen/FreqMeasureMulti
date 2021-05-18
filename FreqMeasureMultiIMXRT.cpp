@@ -363,7 +363,7 @@ void FreqMeasureMulti::isr()
 	// This section handels inputs on Pin A
 	// We can probably combine and need to handle multiple pins on same one...
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFA0) {	// CAPTURE FLAG A0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL2;
+		capture = pflexpwm->SM[sub_module].CVAL2;
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFA0;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
@@ -374,7 +374,7 @@ void FreqMeasureMulti::isr()
 	}
 
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFA1) {	// CAPTURE FLAG A0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL3;
+		capture = pflexpwm->SM[sub_module].CVAL3;
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFA1;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
@@ -385,7 +385,7 @@ void FreqMeasureMulti::isr()
 	}
 	// This section handels inputs on Pin B
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFB0) {	// CAPTURE FLAG B0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL4;				// Guessing ? 
+		capture = pflexpwm->SM[sub_module].CVAL4;				// Guessing ? 
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFB0;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
@@ -395,7 +395,7 @@ void FreqMeasureMulti::isr()
 		processChannelISR(2, capture, 0);
 	}
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFB1) {	// CAPTURE FLAG B0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL5;				// Guessing ? 
+		capture = pflexpwm->SM[sub_module].CVAL5;				// Guessing ? 
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFB1;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
@@ -407,7 +407,7 @@ void FreqMeasureMulti::isr()
 
 	// This section handels inputs on Pin X
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFX0) {	// CAPTURE FLAG X0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL0;				// 
+		capture = pflexpwm->SM[sub_module].CVAL0;				// 
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFX0;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
@@ -418,7 +418,7 @@ void FreqMeasureMulti::isr()
 	}
 
 	if (pflexpwm->SM[sub_module].STS & FLEXPWM_SMSTS_CFX1) {	// CAPTURE FLAG X0 (HINT)
-		capture = pflexpwm->SM[sub_module].VAL1;				// Guessing? 
+		capture = pflexpwm->SM[sub_module].CVAL1;				// Guessing? 
 		pflexpwm->SM[sub_module].STS = FLEXPWM_SMSTS_CFX1;		// clear status
 		if (capture <= 0xE000 || !inc) {
 			capture |= (capture_msw << 16);
